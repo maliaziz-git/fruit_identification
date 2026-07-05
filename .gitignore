@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.keras
+.cursor/
+dataset/raw/
+dataset/splits/
+dataset/train/
+dataset/val/
+dataset/test/
+models/*.keras
+models/*.h5
+outputs/
+frontend/node_modules/
+frontend/dist/
+magicpath-work/*/node_modules/

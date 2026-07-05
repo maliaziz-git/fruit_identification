@@ -1,0 +1,29 @@
+{
+  "mode": "edit",
+  "componentId": "424554828371492864",
+  "projectId": "424554749111734272",
+  "selectedRevisionId": "424554828371492865",
+  "jobId": "419027656626032640-external-agent-424555021934428160",
+  "generatedName": "bold-flood-1186",
+  "name": "SaaS Landing",
+  "dimensions": {
+    "width": 1440,
+    "height": 1100
+  },
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "e11fcebbf2dd28ceed953d9fd204905f62b039b624d8c9ad737b5938e6575e68"
+    },
+    {
+      "path": "src/components/generated/SaaSLanding.tsx",
+      "sha256": "be097a4aa346a7a66eed52e386b6fd53ecdb7d497bfd1f4470335092ad0facc3"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "6e6f0eb71f79e49d12e1fc082ba48b936c056874da37ed31d6b0cf32da4574ec"
+    }
+  ],
+  "baseRevisionId": "424554828371492865"
+}

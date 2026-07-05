@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Fruit Identification System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>Local Fruit Identification System</h1>
+      <p class="subtitle">Identify Malaysian local fruits using a CNN model (MobileNetV3 + Transfer Learning).</p>
+      <nav class="nav-links" aria-label="Site">
+        <a class="btn-primary nav-btn is-active" href="{{ url_for('index') }}">Identify Fruit</a>
+        <a class="btn-secondary nav-btn" href="{{ url_for('encyclopedia') }}">Fruit Encyclopedia</a>
+      </nav>
+    </header>
+
+    <section id="upload-view" class="card upload-card">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden>
+        <div class="drop-zone-prompt" id="drop-zone-prompt">
+          <button type="button" class="upload-icon-btn" id="browse-btn" aria-label="Choose image">
+            <span class="plus-icon">+</span>
+          </button>
+          <p class="drop-text">Click to choose a fruit image</p>
+          <p class="drop-hint">Choose a file or take a photo — JPG / PNG / WEBP, max 8 MB, crop before identifying</p>
+        </div>
+      </div>
+      <div class="upload-actions">
+        <button type="button" class="btn-secondary" id="take-photo-btn">Take Photo</button>
+      </div>
+      <input type="file" id="camera-input" accept="image/*" capture="environment" hidden>
+      <div id="upload-preview-wrap" class="upload-preview-wrap hidden">
+        <p class="upload-preview-label">Preview</p>
+        <div class="upload-preview-box">
+          <img id="upload-preview-img" src="" alt="Selected fruit image">
+        </div>
+        <button type="button" class="btn-secondary" id="upload-edit-crop-btn">✂ Adjust Crop</button>
+      </div>
+      <div class="upload-actions">
+        <button type="button" class="btn-primary" id="identify-btn" disabled>Identify Fruit</button>
+      </div>
+    </section>
+
+    <section id="results-view" class="results-grid hidden">
+      <div class="card panel">
+        <h2 class="panel-title"><span class="badge">1</span> Upload Fruit Image</h2>
+        <div class="drop-zone small" id="drop-zone-2">
+          <input type="file" id="file-input-2" accept="image/jpeg,image/png,image/webp" hidden>
+          <button type="button" class="upload-icon-btn" id="browse-btn-2" aria-label="Choose image">
+            <span class="plus-icon">+</span>
+          </button>
+          <p class="drop-text">Click to choose a fruit image</p>
+          <p class="drop-hint">Choose a file or take a photo — crop to focus on one fruit</p>
+        </div>
+        <div class="upload-actions">
+          <button type="button" class="btn-secondary" id="take-photo-btn-2">Take Photo</button>
+        </div>
+        <input type="file" id="camera-input-2" accept="image/*" capture="environment" hidden>
+        <button type="button" class="btn-primary" id="identify-btn-2" disabled>Identify Fruit</button>
+      </div>
+
+      <div class="card panel">
+        <h2 class="panel-title"><span class="badge">2</span> Image Preview &amp; Identification</h2>
+        <div class="preview-box">
+          <img id="preview-img" class="hidden" src="" alt="Uploaded fruit">
+        </div>
+        <button type="button" class="btn-secondary hidden" id="edit-crop-btn">
+          ✂ Adjust Crop
+        </button>
+        <button type="button" class="btn-secondary" id="upload-another-btn">
+          <span class="icon-refresh">↻</span> Upload Another Image
+        </button>
+      </div>
+
+      <div class="card panel">
+        <h2 class="panel-title"><span class="badge">3</span> Result</h2>
+        <p class="result-label">Prediction</p>
+        <p class="result-name" id="result-name">—</p>
+        <p class="confidence-line">Confidence: <span id="result-confidence">—</span></p>
+        <div class="top-predictions">
+          <p class="top-label">Top Predictions</p>
+          <div id="top-bars"></div>
+        </div>
+        <div class="status-box" id="status-box">
+          <span class="status-icon">✓</span>
+          <span id="status-message">—</span>
+        </div>
+        <div class="poster-actions">
+          <button type="button" class="btn-secondary" id="download-poster-btn" disabled>
+            Download Share Poster
+          </button>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <h2 class="panel-title"><span class="badge">4</span> Fruit Information</h2>
+        <div class="info-block">
+          <h3>Description</h3>
+          <p id="info-description">—</p>
+        </div>
+        <div class="info-block">
+          <h3>Nutrition (per 100 g)</h3>
+          <ul id="info-nutrition"></ul>
+        </div>
+        <div class="info-block">
+          <h3>Seasonal Availability</h3>
+          <p id="info-season">—</p>
+        </div>
+        <div class="info-block">
+          <h3>Price Reference</h3>
+          <p id="info-price">—</p>
+        </div>
+        <div class="info-block">
+          <h3>Common Uses</h3>
+          <p id="info-uses">—</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card tips-card">
+      <h2 class="tips-heading">
+        <span class="bulb-icon">💡</span> Image-Taking Tips
+      </h2>
+      <p class="tips-intro">For better identification results, follow these tips:</p>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <span class="tip-icon">☀</span>
+          <strong>Use good lighting</strong>
+          <span>Natural light works best.</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">🍎</span>
+          <strong>Capture one fruit only</strong>
+          <span>Avoid multiple fruits in one frame.</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">▣</span>
+          <strong>Keep the fruit fully visible</strong>
+          <span>Show the entire fruit in the image.</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">▢</span>
+          <strong>Use a plain background</strong>
+          <span>Avoid cluttered or distracting backgrounds.</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">📷</span>
+          <strong>Avoid blurry images</strong>
+          <span>Ensure the photo is sharp and clear.</span>
+        </div>
+        <div class="tip-item">
+          <span class="tip-icon">🔍</span>
+          <strong>Take the photo from a close and clear angle</strong>
+          <span>Get close and focused for better results.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Final Year Project — CNN Fruit Identification (MobileNetV3)
+    </footer>
+  </div>
+
+  <!-- Crop modal -->
+  <div id="crop-modal" class="crop-modal hidden" role="dialog" aria-labelledby="crop-modal-title" aria-modal="true">
+    <div id="crop-modal-backdrop" class="crop-modal-backdrop"></div>
+    <div class="crop-modal-dialog">
+      <h2 id="crop-modal-title" class="crop-modal-title">Crop your image</h2>
+      <p class="crop-modal-subtitle">Drag the corners to frame the fruit. Double-click to switch move/crop mode.</p>
+      <p id="crop-hint" class="crop-filename"></p>
+      <div class="crop-container">
+        <img id="crop-image" src="" alt="Image to crop">
+      </div>
+      <div class="crop-actions">
+        <button type="button" class="btn-secondary" id="crop-cancel-btn">Cancel</button>
+        <button type="button" class="btn-secondary" id="crop-full-btn">Use Full Image</button>
+        <button type="button" class="btn-primary" id="crop-apply-btn">Apply Crop</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading" class="loading hidden">
+    <div class="spinner"></div>
+    <p id="loading-message">Identifying fruit...</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

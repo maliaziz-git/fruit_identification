@@ -1,0 +1,29 @@
+{
+  "mode": "edit",
+  "componentId": "424554829218746368",
+  "projectId": "424554749111734272",
+  "selectedRevisionId": "424554829218746369",
+  "jobId": "419027656626032640-external-agent-424555023385632768",
+  "generatedName": "steadily-bridge-6261",
+  "name": "Fruit Encyclopedia Grid",
+  "dimensions": {
+    "width": 1440,
+    "height": 900
+  },
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "df98c8f2b8b10e5a67037ae21c24e8dc9602b684a68fb5ef7ad245284bc9336e"
+    },
+    {
+      "path": "src/components/generated/FruitEncyclopediaGrid.tsx",
+      "sha256": "a4c9672c54ec72a1e9e75a18c8e4311740629917e91d9500441506e22dc07996"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "6e6f0eb71f79e49d12e1fc082ba48b936c056874da37ed31d6b0cf32da4574ec"
+    }
+  ],
+  "baseRevisionId": "424554829218746369"
+}

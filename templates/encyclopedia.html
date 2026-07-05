@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Encyclopedia — Local Fruit Identification System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='encyclopedia.css') }}">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="ency-header-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 6c-2 4-6 6-10 6 2 8 6 14 10 18 4-4 8-10 10-18-4 0-8-2-10-6z" fill="#2d6a4f"/>
+          <path d="M24 30c-6 0-11-5-13-11 1 10 6 18 13 22 7-4 12-12 13-22-2 6-7 11-13 11z" fill="#40916c"/>
+          <path d="M24 4c1 2 3 3 5 3" stroke="#1b4332" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1>Fruit Encyclopedia</h1>
+      <p class="subtitle">Explore the Malaysian local fruit species used to train the MobileNetV3 model.</p>
+      <nav class="nav-links" aria-label="Site">
+        <a class="btn-secondary nav-btn" href="{{ url_for('index') }}">Identify Fruit</a>
+        <a class="btn-primary nav-btn is-active" href="{{ url_for('encyclopedia') }}">Fruit Encyclopedia</a>
+      </nav>
+    </header>
+
+    <section class="card enc-search-card">
+      <label class="enc-search-label" for="fruit-search">Search fruits</label>
+      <input
+        type="search"
+        id="fruit-search"
+        class="enc-search-input"
+        placeholder="Search by name, scientific name, or description…"
+        autocomplete="off"
+      >
+    </section>
+
+    <p id="enc-empty" class="enc-empty hidden" role="status">No fruits match your search.</p>
+
+    <div id="fruit-list" class="enc-list">
+      {% for fruit in fruits %}
+      <article
+        class="card enc-card"
+        data-fruit-card
+        data-search="{{ fruit.local_name }} {{ fruit.english_name }} {{ fruit.botanical_name }} {{ fruit.description }}"
+      >
+        <div class="enc-card-inner">
+          <div class="enc-image-wrap">
+            <img
+              class="enc-image"
+              src="{{ url_for('fruit_sample', local_name=fruit.id) }}"
+              alt="{{ fruit.local_name }}"
+              loading="lazy"
+              data-fruit-img
+            >
+            <div class="enc-image-placeholder hidden" data-fruit-placeholder aria-hidden="true">
+              <svg viewBox="0 0 64 64" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="36" r="20" fill="#d8f3dc"/>
+                <path d="M32 16c-2 4-6 6-9 6 1 6 4 11 9 14 5-3 8-8 9-14-3 0-7-2-9-6z" fill="#2d6a4f"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="enc-body">
+            <div class="enc-title-row">
+              <h2 class="enc-title">{{ fruit.local_name }}</h2>
+              {% if fruit.english_name and fruit.english_name != fruit.local_name %}
+              <span class="enc-english">({{ fruit.english_name }})</span>
+              {% endif %}
+            </div>
+            <p class="enc-scientific">
+              Scientific Name: <em>{{ fruit.botanical_name }}</em>
+            </p>
+
+            <div class="enc-tabs" role="tablist" aria-label="{{ fruit.local_name }} details">
+              <button type="button" class="enc-tab active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+              <button type="button" class="enc-tab" role="tab" aria-selected="false" data-tab="season">Season</button>
+              <button type="button" class="enc-tab" role="tab" aria-selected="false" data-tab="nutrition">Nutrition</button>
+            </div>
+
+            <div class="enc-panel active" role="tabpanel" data-panel="overview">
+              <p>{{ fruit.description }}</p>
+            </div>
+            <div class="enc-panel" role="tabpanel" data-panel="season" hidden>
+              <p>{{ fruit.season }}</p>
+            </div>
+            <div class="enc-panel" role="tabpanel" data-panel="nutrition" hidden>
+              {% if fruit.nutrition %}
+              <ul class="enc-nutrition-list">
+                {% for item in fruit.nutrition %}
+                <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No nutrition data available.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <footer class="footer">
+      Final Year Project — CNN Fruit Identification (MobileNetV3)
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='encyclopedia.js') }}"></script>
+</body>
+</html>

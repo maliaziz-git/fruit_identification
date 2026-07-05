@@ -1,0 +1,196 @@
+/* Fruit Encyclopedia — layout only; colors from style.css */
+
+.ency-header-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.enc-search-card {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.enc-search-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #636e72;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.enc-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #2d3436;
+  background: #f1f8f4;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.enc-search-input:focus {
+  outline: none;
+  border-color: #2d6a4f;
+  box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
+}
+
+.enc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.enc-card {
+  margin-bottom: 0;
+}
+
+.enc-card-inner {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.enc-image-wrap {
+  flex: 0 0 200px;
+  width: 200px;
+  min-height: 160px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enc-image {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.enc-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 160px;
+}
+
+.enc-image-placeholder.hidden {
+  display: none;
+}
+
+.enc-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.enc-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.enc-title-icon {
+  font-size: 1rem;
+}
+
+.enc-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1b4332;
+  margin: 0;
+}
+
+.enc-english {
+  font-size: 0.95rem;
+  color: #636e72;
+}
+
+.enc-scientific {
+  font-size: 0.9rem;
+  color: #636e72;
+  margin-bottom: 0.85rem;
+}
+
+.enc-scientific em {
+  color: #2d3436;
+  font-style: italic;
+}
+
+.enc-tabs {
+  display: flex;
+  gap: 1.25rem;
+  border-bottom: 1px solid #dfe6e9;
+  margin-bottom: 0.75rem;
+}
+
+.enc-tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #636e72;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.enc-tab:hover {
+  color: #2d6a4f;
+}
+
+.enc-tab.active {
+  color: #1b4332;
+  border-bottom-color: #2d6a4f;
+}
+
+.enc-panel {
+  font-size: 0.95rem;
+  color: #2d3436;
+  line-height: 1.55;
+}
+
+.enc-panel[hidden] {
+  display: none;
+}
+
+.enc-nutrition-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.enc-nutrition-list li {
+  margin-bottom: 0.25rem;
+}
+
+.enc-empty {
+  text-align: center;
+  color: #636e72;
+  padding: 2rem 1rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .enc-card-inner {
+    flex-direction: column;
+  }
+
+  .enc-image-wrap {
+    flex: none;
+    width: 100%;
+  }
+}

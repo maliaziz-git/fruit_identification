@@ -1,0 +1,29 @@
+{
+  "mode": "edit",
+  "componentId": "424560069649260544",
+  "projectId": "424554749111734272",
+  "selectedRevisionId": "424560069649260545",
+  "jobId": "419027656626032640-external-agent-424560243968733184",
+  "generatedName": "happily-moon-7336",
+  "name": "Fruit Identify",
+  "dimensions": {
+    "width": 1440,
+    "height": 900
+  },
+  "selectedImages": [],
+  "editableFiles": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "2ec57a667435990fed8fcbb6e6a788072919afea29f679444956525daee3738a"
+    },
+    {
+      "path": "src/components/generated/FruitIdentify.tsx",
+      "sha256": "8750fec550ea7f9ba74aa739fa0d08ee230129fd913697a59b93d1feb44f5a6c"
+    },
+    {
+      "path": "src/index.css",
+      "sha256": "6e6f0eb71f79e49d12e1fc082ba48b936c056874da37ed31d6b0cf32da4574ec"
+    }
+  ],
+  "baseRevisionId": "424560069649260545"
+}

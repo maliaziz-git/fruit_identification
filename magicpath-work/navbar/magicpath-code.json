@@ -2,28 +2,24 @@
   "mode": "edit",
   "componentId": "424554824584015872",
   "projectId": "424554749111734272",
-  "selectedRevisionId": "424554824584015873",
-  "jobId": "419027656626032640-external-agent-424555020835524608",
+  "selectedRevisionId": "424953546383953920",
+  "baseRevisionId": "424953546383953920",
+  "jobId": "419027656626032640-external-agent-424953546383953921",
   "generatedName": "glad-month-5550",
   "name": "SaaS Navbar",
-  "dimensions": {
-    "width": 1440,
-    "height": 72
-  },
   "selectedImages": [],
   "editableFiles": [
     {
       "path": "src/App.tsx",
-      "sha256": "80a25a1b33b2ac8cea40968441645e8169df39c9d4d1a7394d9325aed53e0a3a"
+      "sha256": "62c850e73e3aa7212d869bb0b255cef824f6ec6776bc21edd02e3b4a73d9be62"
     },
     {
       "path": "src/components/generated/SaaSNavbar.tsx",
-      "sha256": "171a6549e8ea0933e35a2652c9acfe6d4bd872f7c357e0cd4ef3dbc4b2cf1ea9"
+      "sha256": "1e533cf52b3c6530d1ce9879094e598a8db05bff2c95c197bc45db421be8ba6e"
     },
     {
       "path": "src/index.css",
-      "sha256": "6e6f0eb71f79e49d12e1fc082ba48b936c056874da37ed31d6b0cf32da4574ec"
+      "sha256": "bf03be5ee95ebaefd70fbf92db83145b4a70143d50b9df751021b39aec8bf51e"
     }
-  ],
-  "baseRevisionId": "424554824584015873"
+  ]
 }

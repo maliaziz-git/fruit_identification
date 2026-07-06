@@ -17,8 +17,8 @@ function App() {
   return (
     <>
       <SaaSNavbar />
-    </>
-  ); // %EXPORT_STATEMENT%
+    </>);
+  // %EXPORT_STATEMENT%
 }
 
 export default App;

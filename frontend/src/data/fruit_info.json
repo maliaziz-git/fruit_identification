@@ -1,0 +1,422 @@
+{
+  "Bambangan": {
+    "english_name": "Johey Oak",
+    "botanical_name": "Mangifera pajang",
+    "description": "Bambangan is a Borneo mango relative with thick skin and fibrous flesh. It is commonly eaten fresh, pickled, or used in traditional dishes.",
+    "nutrition": [
+      "Approx. Calories: 89 kcal",
+      "Carbohydrate: 20.6 g",
+      "Vitamin C: 46.3 mg",
+      "Fiber: 4.4 g",
+      "Potassium: 191 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 10.00 – RM 25.00 per kg or processed pack. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, pickled, or used in traditional Borneo dishes."
+  },
+  "Dabai": {
+    "english_name": "Dabai",
+    "botanical_name": "Canarium odontophyllum",
+    "description": "Dabai is a Sarawak fruit with dark purple skin and creamy flesh after softening. It is usually soaked in warm water and eaten with salt or soy sauce.",
+    "nutrition": [
+      "Approx. Calories: 339 kcal",
+      "Carbohydrate: 28.0 g",
+      "Vitamin C: 0.0 mg",
+      "Fiber: 22.98 g",
+      "Potassium: 810 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 16.00 – RM 35.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Soaked in warm water and eaten with salt, soy sauce, or rice."
+  },
+  "Belimbing Hutan": {
+    "english_name": "Borneo Starfruit",
+    "botanical_name": "Baccaurea angulata",
+    "description": "Belimbing Hutan is a lesser-known local fruit with a sour taste. It is usually eaten fresh in small amounts or used in local food preparations.",
+    "nutrition": [
+      "Approx. Calories: 50 kcal",
+      "Carbohydrate: 12.0 g",
+      "Vitamin C: 18.0 mg",
+      "Fiber: 0.8 g",
+      "Potassium: 120 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 10 – RM 20 per kg. Rare fruit prices may vary depending on location and season.",
+    "uses": "Eaten fresh in small amounts or used in local sour preparations."
+  },
+  "Terap": {
+    "english_name": "Marang",
+    "botanical_name": "Artocarpus odoratissimus",
+    "description": "Terap is a Borneo fruit related to jackfruit with soft sweet flesh. It is usually eaten fresh when ripe.",
+    "nutrition": [
+      "Approx. Calories: 97 kcal",
+      "Carbohydrate: 25.0 g",
+      "Vitamin C: 36.0 mg",
+      "Fiber: 3.2 g",
+      "Potassium: 250 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 8.00 – RM 25.00 per fruit or kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh or used in local desserts."
+  },
+  "Durian": {
+    "english_name": "Durian",
+    "botanical_name": "Durio zibethinus",
+    "description": "Durian is a well-known Malaysian tropical fruit with a thorny husk and strong aroma. Its rich, creamy flesh is eaten fresh and used in desserts, pastries, and local dishes.",
+    "nutrition": [
+      "Calories: 147 kcal",
+      "Carbohydrate: 27.1 g",
+      "Vitamin C: 19.7 mg",
+      "Fiber: 3.8 g",
+      "Potassium: 436 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "Estimated RM 15.00 – RM 60.00 per kg. Prices may vary depending on variety, location, grade, and season.",
+    "uses": "Eaten fresh, used in tempoyak, cakes, ice cream, desserts, and pastries."
+  },
+  "Manggis": {
+    "english_name": "Mangosteen",
+    "botanical_name": "Garcinia mangostana",
+    "description": "Manggis is a seasonal tropical fruit with purple skin and white juicy segments. It has a sweet, slightly tangy taste and is usually eaten fresh.",
+    "nutrition": [
+      "Calories: 73 kcal",
+      "Carbohydrate: 17.9 g",
+      "Vitamin C: 2.9 mg",
+      "Fiber: 1.8 g",
+      "Potassium: 48 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "Estimated RM 8.00 – RM 20.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in desserts, juices, and fruit salads."
+  },
+  "Rambutan": {
+    "english_name": "Rambutan",
+    "botanical_name": "Nephelium lappaceum L.",
+    "description": "Rambutan is a hairy red or yellow fruit with sweet translucent flesh. It is a popular seasonal fruit in Malaysia and is usually eaten fresh.",
+    "nutrition": [
+      "Calories: 68 kcal",
+      "Carbohydrate: 16.5 g",
+      "Vitamin C: 4.9 mg",
+      "Fiber: 0.9 g",
+      "Potassium: 42 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "Estimated RM 5.00 – RM 15.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, canned, or used in desserts and fruit salads."
+  },
+  "Cempedak": {
+    "english_name": "Cempedak",
+    "botanical_name": "Artocarpus champeden",
+    "description": "Cempedak is a tropical fruit related to jackfruit with yellow, fragrant flesh. The ripe flesh is sweet and commonly eaten fresh or fried as a local snack.",
+    "nutrition": [
+      "Approx. Calories: 116 kcal",
+      "Carbohydrate: 28.6 g",
+      "Vitamin C: 15.0 mg",
+      "Fiber: 3.4 g",
+      "Potassium: 448 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "RM 54.00 per 2–3 kg fruit. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, fried as a snack, or used in desserts and local kuih."
+  },
+  "Belimbing": {
+    "english_name": "Starfruit",
+    "botanical_name": "Averrhoa carambola L.",
+    "description": "Belimbing is a star-shaped tropical fruit with crisp, juicy flesh and a sweet-sour taste. It is commonly eaten fresh in Malaysia and is also used in juice, rojak, and pickled dishes.",
+    "nutrition": [
+      "Calories: 24 kcal",
+      "Carbohydrate: 5.0 g",
+      "Vitamin C: 25.8 mg",
+      "Fiber: 1.8 g",
+      "Potassium: 99 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 7.00 per 4 pcs. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in juice, rojak, pickles, and local sweet-sour dishes."
+  },
+  "Duku": {
+    "english_name": "Duku",
+    "botanical_name": "Lansium domesticum",
+    "description": "Duku is a tropical fruit closely related to langsat and dokong. It has translucent segments with a sweet-sour taste and is commonly eaten fresh.",
+    "nutrition": [
+      "Approx. Calories: 34 kcal",
+      "Carbohydrate: 8.2 g",
+      "Vitamin C: 13.4 mg",
+      "Fiber: 0.9 g",
+      "Potassium: 230 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "Estimated RM 8.00 – RM 18.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh as a seasonal snack."
+  },
+  "Langsat": {
+    "english_name": "Langsat",
+    "botanical_name": "Lansium domesticum",
+    "description": "Langsat is a small seasonal fruit with translucent flesh and a sweet-sour taste. It is commonly eaten fresh after peeling the thin yellow skin.",
+    "nutrition": [
+      "Approx. Calories: 66 kcal",
+      "Carbohydrate: 15.3 g",
+      "Vitamin C: 46.0 mg",
+      "Fiber: 0.3 g",
+      "Potassium: 230 mg."
+    ],
+    "season": "Seasonal in Malaysia. Peak months vary by fruit type, state, and yearly weather; refer to the latest DOA seasonal fruit calendar.",
+    "price": "Estimated RM 8.00 – RM 18.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh as a seasonal snack."
+  },
+  "Salak": {
+    "english_name": "Salak",
+    "botanical_name": "Salacca zalacca",
+    "description": "Salak is known as snake fruit because of its scaly brown skin. The flesh is firm, crunchy, and sweet-sour, and it is commonly eaten fresh.",
+    "nutrition": [
+      "Approx. Calories: 82 kcal",
+      "Carbohydrate: 22.3 g",
+      "Vitamin C: 8.4 mg",
+      "Fiber: 2.6 g",
+      "Potassium: 256 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 8.00 – RM 22.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, pickled, or used in rojak and fruit snacks."
+  },
+  "Rambai": {
+    "english_name": "Rambai",
+    "botanical_name": "Baccaurea motleyana",
+    "description": "Rambai is a small local fruit with translucent sweet-sour flesh. It is commonly eaten fresh or used in local preserves.",
+    "nutrition": [
+      "Approx. Calories: 60 kcal",
+      "Carbohydrate: 14.0 g",
+      "Vitamin C: 24.0 mg",
+      "Fiber: 0.4 g",
+      "Potassium: 111 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 10.00 – RM 25.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, pickled, or used in preserves and local dishes."
+  },
+  "Kuini": {
+    "english_name": "Kuini",
+    "botanical_name": "Mangifera odorata Griff.",
+    "description": "Kuini is a mango relative with a strong aroma and sweet-sour flesh. It is commonly eaten fresh or used in local desserts and sambal.",
+    "nutrition": [
+      "Approx. Calories: 83 kcal",
+      "Carbohydrate: 18.5 g",
+      "Vitamin C: 15.0 mg",
+      "Fiber: 2.0 g",
+      "Potassium: 187 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 10.00 – RM 22.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh or used in sambal, desserts, juices, and local dishes."
+  },
+  "Binjai": {
+    "english_name": "Malaysia Mango",
+    "botanical_name": "Mangifera caesia",
+    "description": "Binjai is a mango relative with a strong aroma and sour-sweet flesh. It is commonly used in sambal, pickles, and local dishes.",
+    "nutrition": [
+      "Calories: 64 kcal",
+      "Carbohydrate: 14.6 g",
+      "Vitamin C: 74.1 mg",
+      "Fiber: 2.4 g",
+      "Potassium: 120 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 8 – RM 18 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Used in sambal, pickles, and sour local dishes."
+  },
+  "Nam-Nam": {
+    "english_name": "Nam-Nam",
+    "botanical_name": "Cynometra cauliflora",
+    "description": "Nam-Nam is a sour tropical fruit with a wrinkled pod-like shape. It is usually eaten with seasoning or used in pickles and local preparations.",
+    "nutrition": [
+      "Approx. Calories: 85 kcal",
+      "Carbohydrate: 15.3 g",
+      "Vitamin C: 35.0 mg",
+      "Fiber: 3.2 g",
+      "Potassium: 180 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 10 – RM 20 per kg. Rare fruit prices may vary depending on location and season.",
+    "uses": "Eaten with seasoning, pickled, or used in sour local preparations."
+  },
+  "Kelubi": {
+    "english_name": "Kelubi",
+    "botanical_name": "Eleiodoxa conferta",
+    "description": "Kelubi is a sour palm fruit found in local wetland areas. It is commonly pickled or used in sour local dishes.",
+    "nutrition": [
+      "Approx. Calories: 41 kcal",
+      "Carbohydrate: 9.0 g",
+      "Vitamin C: 8.0 mg",
+      "Fiber: 2.0 g",
+      "Potassium: 110 mg."
+    ],
+    "season": "Seasonal or limited availability in Malaysia. Manual verification is recommended for exact peak season.",
+    "price": "Estimated RM 8 – RM 20 per kg or pack. Prices may vary depending on fresh or preserved product form.",
+    "uses": "Pickled or used in sour local dishes and condiments."
+  },
+  "Mata Kucing": {
+    "english_name": "Cat's Eye",
+    "botanical_name": "Nephelium malaiense Griff.",
+    "description": "Mata Kucing is a longan-type fruit with sweet translucent flesh. It is commonly eaten fresh or used in drinks and desserts.",
+    "nutrition": [
+      "Calories: 60 kcal",
+      "Carbohydrate: 15.1 g",
+      "Vitamin C: 84.0 mg",
+      "Fiber: 1.1 g",
+      "Potassium: 266 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 15.40 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh or used in drinks, desserts, and canned fruit products."
+  },
+  "Betik": {
+    "english_name": "Papaya",
+    "botanical_name": "Carica papaya L.",
+    "description": "Betik is a soft orange-fleshed tropical fruit with a sweet taste when ripe. It is commonly eaten fresh, blended into drinks, or used in desserts and salads.",
+    "nutrition": [
+      "Calories: 43 kcal",
+      "Carbohydrate: 10.8 g",
+      "Vitamin C: 60.9 mg",
+      "Fiber: 1.7 g",
+      "Potassium: 182 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 11.30 per medium fruit. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in salads, smoothies, desserts, and local cooking when unripe."
+  },
+  "Jambu Batu": {
+    "english_name": "Guava",
+    "botanical_name": "Psidium guava",
+    "description": "Jambu Batu is a crunchy tropical fruit with white or pink flesh and many small seeds. It is rich in vitamin C and commonly eaten fresh or with asam powder.",
+    "nutrition": [
+      "Calories: 68 kcal",
+      "Carbohydrate: 14.3 g",
+      "Vitamin C: 228.3 mg",
+      "Fiber: 5.4 g",
+      "Potassium: 417 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 10.70 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in juice, rojak, salads, and snacks with seasoning."
+  },
+  "Jambu Air": {
+    "english_name": "Water Rose Apple",
+    "botanical_name": "Eugenia aquea Burm. F.",
+    "description": "Jambu Air is a crisp, watery fruit with a mild sweet taste. It is commonly eaten fresh, chilled, or added to fruit salads.",
+    "nutrition": [
+      "Calories: 39 kcal",
+      "Carbohydrate: 8.5 g",
+      "Vitamin C: 8.4 mg",
+      "Fiber: 1.2 g",
+      "Potassium: 8 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 8.00 – RM 18.00 per kg or RM 8.00 – RM 15.00 per pack. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, chilled, or used in rojak and fruit salads."
+  },
+  "Jambu Air Madu": {
+    "english_name": "Wax Apple",
+    "botanical_name": "Syzygium samarangence",
+    "description": "Jambu Air Madu is a sweet wax apple variety with crisp and juicy flesh. It is commonly eaten fresh as a snack.",
+    "nutrition": [
+      "Approx. Calories: 39 kcal",
+      "Carbohydrate: 8.5 g",
+      "Vitamin C: 8.4 mg",
+      "Fiber: 1.2 g",
+      "Potassium: 8 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 10.00 – RM 20.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, chilled, or used in fruit salads."
+  },
+  "Nanas": {
+    "english_name": "Pineapple",
+    "botanical_name": "Ananas comosus",
+    "description": "Nanas is a tropical fruit with juicy yellow flesh and a sweet-sour taste. It is eaten fresh, cooked in local dishes, made into juice, or used in desserts.",
+    "nutrition": [
+      "Calories: 50 kcal",
+      "Carbohydrate: 13.1 g",
+      "Vitamin C: 47.8 mg",
+      "Fiber: 1.4 g",
+      "Potassium: 109 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 6.30 – RM 8.30 per fruit. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in juice, rojak, pajeri, curries, desserts, and jams."
+  },
+  "Nangka": {
+    "english_name": "Jackfruit",
+    "botanical_name": "Artocarpus heterophyllus",
+    "description": "Nangka is a large tropical fruit with sweet yellow bulbs inside. The ripe fruit is eaten fresh, while young jackfruit can be cooked in savoury dishes.",
+    "nutrition": [
+      "Calories: 95 kcal",
+      "Carbohydrate: 23.3 g",
+      "Vitamin C: 13.7 mg",
+      "Fiber: 1.5 g",
+      "Potassium: 448 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 6.00 – RM 15.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in desserts, curries, young jackfruit dishes, and local snacks."
+  },
+  "Pisang": {
+    "english_name": "Banana",
+    "botanical_name": "Musa paradisiaca L.",
+    "description": "Pisang is a common fruit in Malaysia with soft sweet flesh when ripe. It is eaten fresh, fried, steamed, or used in cakes, desserts, and local snacks.",
+    "nutrition": [
+      "Calories: 89 kcal",
+      "Carbohydrate: 22.8 g",
+      "Vitamin C: 8.7 mg",
+      "Fiber: 2.6 g",
+      "Potassium: 358 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 8.00 – RM 14.20 per kg depending on variety. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, fried, steamed, baked, or used in cakes and desserts."
+  },
+  "Longan": {
+    "english_name": "Longan",
+    "botanical_name": "Nephelium longana",
+    "description": "Longan is a small round fruit with translucent sweet flesh. It is eaten fresh, canned, or used in drinks and desserts.",
+    "nutrition": [
+      "Calories: 60 kcal",
+      "Carbohydrate: 15.1 g",
+      "Vitamin C: 84.0 mg",
+      "Fiber: 1.1 g",
+      "Potassium: 266 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "RM 15.40 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, canned, or used in drinks and desserts."
+  },
+  "Limau Besar": {
+    "english_name": "Pomelo",
+    "botanical_name": "Citrus grandis",
+    "description": "Limau Besar, also known as pomelo, is a large citrus fruit with juicy segments. It has a mild sweet-sour taste and is commonly eaten fresh.",
+    "nutrition": [
+      "Calories: 38 kcal",
+      "Carbohydrate: 9.6 g",
+      "Vitamin C: 61.0 mg",
+      "Fiber: 1.0 g",
+      "Potassium: 216 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 5.00 – RM 12.00 per fruit. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, used in salads, juices, desserts, and festive dishes."
+  },
+  "Tembikai": {
+    "english_name": "Watermelon",
+    "botanical_name": "Citrullus lanatus",
+    "description": "Tembikai is a refreshing fruit with juicy red flesh and high water content. It is eaten fresh, served cold, or blended into juice.",
+    "nutrition": [
+      "Calories: 30 kcal",
+      "Carbohydrate: 7.6 g",
+      "Vitamin C: 8.1 mg",
+      "Fiber: 0.4 g",
+      "Potassium: 112 mg."
+    ],
+    "season": "Available year-round in Malaysia. Supply may vary depending on location, grade, and season.",
+    "price": "Estimated RM 3.00 – RM 8.00 per kg. Prices may vary depending on location, grade, and season.",
+    "uses": "Eaten fresh, chilled, juiced, or served in fruit salads."
+  }
+}

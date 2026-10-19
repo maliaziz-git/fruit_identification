@@ -77,7 +77,12 @@ export const FruitEncyclopediaGrid = () => {
                     alt={fruit.local_name}
                     className="h-full w-full object-cover"
                     onError={(e) => {
-                      e.currentTarget.style.display = 'none'
+                      const fallback = `/fruit-samples/${encodeURIComponent(fruit.local_name)}.jpg`
+                      if (!e.currentTarget.src.endsWith(fallback)) {
+                        e.currentTarget.src = fallback
+                      } else {
+                        e.currentTarget.style.display = 'none'
+                      }
                     }}
                   />
                 </div>

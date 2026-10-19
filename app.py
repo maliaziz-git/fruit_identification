@@ -99,16 +99,24 @@ def _load_encyclopedia_fruits():
 
 
 def _find_sample_image(local_name):
-    """First image in dataset/raw/<local_name>/, or None."""
+    """First image in dataset/raw/<local_name>/, or lightweight fallback sample."""
     if local_name not in train.get_allowed_class_names():
         return None
     folder = os.path.join(train.RAW_DIR, local_name)
-    if not os.path.isdir(folder):
-        return None
-    for fname in sorted(os.listdir(folder)):
-        ext = os.path.splitext(fname)[1].lower()
-        if ext in train.IMAGE_EXTENSIONS:
-            return os.path.join(folder, fname)
+    if os.path.isdir(folder):
+        for fname in sorted(os.listdir(folder)):
+            ext = os.path.splitext(fname)[1].lower()
+            if ext in train.IMAGE_EXTENSIONS:
+                return os.path.join(folder, fname)
+    fallback = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "frontend",
+        "public",
+        "fruit-samples",
+        f"{local_name}.jpg",
+    )
+    if os.path.isfile(fallback):
+        return fallback
     return None
 
 

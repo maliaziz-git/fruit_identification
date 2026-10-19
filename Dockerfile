@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY data/ data/
 COPY models/ models/
+COPY frontend/public/fruit-samples/ frontend/public/fruit-samples/
 COPY app.py train.py predict.py poster.py ./
 
 EXPOSE 8080 7860 5000

@@ -48,7 +48,26 @@ const MAX_BYTES = 8 * 1024 * 1024
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'webp']
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp']
 
+import localFruitInfo from '../data/fruit_info.json'
+
 const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
+function getLocalFruits(): Fruit[] {
+  return Object.keys(localFruitInfo)
+    .sort()
+    .map((local_name) => {
+      const entry = (localFruitInfo as Record<string, any>)[local_name] || {}
+      return {
+        id: local_name,
+        local_name,
+        english_name: entry.english_name || local_name,
+        botanical_name: entry.botanical_name || '',
+        description: entry.description || '',
+        nutrition: Array.isArray(entry.nutrition) ? entry.nutrition : [],
+        season: entry.season || '',
+      }
+    })
+}
 
 export function validateFile(file: File): string | null {
   const ext = file.name.includes('.')
@@ -62,13 +81,26 @@ export function validateFile(file: File): string | null {
 }
 
 export async function fetchFruits(): Promise<Fruit[]> {
-  const res = await fetch(`${API_BASE}/api/fruits`)
-  if (!res.ok) throw new Error('Failed to load fruit encyclopedia.')
-  return res.json()
+  try {
+    const endpoint = API_BASE ? `${API_BASE}/api/fruits` : '/api/fruits'
+    const res = await fetch(endpoint)
+    if (res.ok) {
+      const data = await res.json()
+      if (Array.isArray(data) && data.length > 0) {
+        return data
+      }
+    }
+  } catch (err) {
+    console.warn('Backend unavailable, using bundled encyclopedia metadata:', err)
+  }
+  return getLocalFruits()
 }
 
 export function fruitSampleUrl(localName: string): string {
-  return `${API_BASE}/fruit-sample/${encodeURIComponent(localName)}`
+  if (API_BASE) {
+    return `${API_BASE}/fruit-sample/${encodeURIComponent(localName)}`
+  }
+  return `/fruit-samples/${encodeURIComponent(localName)}.jpg`
 }
 
 export async function predictFruit(
@@ -82,7 +114,17 @@ export async function predictFruit(
   } else if (options?.crop) {
     formData.append('crop', JSON.stringify(options.crop))
   }
-  const res = await fetch(`${API_BASE}/predict`, { method: 'POST', body: formData })
+  const endpoint = API_BASE ? `${API_BASE}/predict` : '/predict'
+  let res: Response
+  try {
+    res = await fetch(endpoint, { method: 'POST', body: formData })
+  } catch {
+    throw new Error(
+      API_BASE
+        ? `Could not connect to backend at ${API_BASE}. If using Render free tier, the instance may be waking up from sleep. Please wait ~30 seconds and try again.`
+        : 'Backend API is not connected. If you deployed on Vercel, set the VITE_API_URL environment variable in your Vercel Project Settings to your deployed backend URL.'
+    )
+  }
   const data = await res.json()
   if (!res.ok) throw new Error(data.error || 'Prediction failed')
   return data
@@ -108,7 +150,17 @@ export async function downloadPoster(
       fruit_info: prediction.fruit_info || {},
     }),
   )
-  const res = await fetch(`${API_BASE}/generate-poster`, { method: 'POST', body: formData })
+  const endpoint = API_BASE ? `${API_BASE}/generate-poster` : '/generate-poster'
+  let res: Response
+  try {
+    res = await fetch(endpoint, { method: 'POST', body: formData })
+  } catch {
+    throw new Error(
+      API_BASE
+        ? `Could not reach backend (${API_BASE}) to generate poster. Please retry in a few seconds.`
+        : 'Backend API is not configured. Please set VITE_API_URL in your Vercel Project Settings.'
+    )
+  }
   if (!res.ok) {
     let message = 'Poster generation failed.'
     try {

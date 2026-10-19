@@ -3,7 +3,10 @@
 __pycache__
 *.pyc
 dataset
-frontend
+frontend/*
+!frontend/public
+frontend/public/*
+!frontend/public/fruit-samples
 outputs
 .vscode
 .cursor

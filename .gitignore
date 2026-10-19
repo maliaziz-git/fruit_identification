@@ -14,4 +14,3 @@ models/*.h5
 outputs/
 frontend/node_modules/
 frontend/dist/
-magicpath-work/*/node_modules/

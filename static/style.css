@@ -541,7 +541,11 @@ a.btn-secondary:hover {
 }
 
 .crop-container {
-  max-height: 55vh;
+  width: min(100%, 520px);
+  aspect-ratio: 1 / 1;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
   background: #f1f8f4;
   border-radius: 10px;
   overflow: hidden;

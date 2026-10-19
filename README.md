@@ -17,7 +17,8 @@ fruit_identification/
 ├── dataset/
 │   ├── raw/               # Original images (28 class folders)
 │   └── splits/            # Created by split_dataset.py
-│       ├── 70_20_10/      # App default (train / val / test)
+│       ├── 80_10_10/      # App default (train / val / test)
+│       ├── 70_20_10/
 │       ├── 60_20_20/
 │       └── 80_10_10/
 ├── models/
@@ -78,11 +79,11 @@ If `py -3.10` is missing, install Python 3.10 from [python.org](https://www.pyth
 
 ### 1. Split dataset
 
-Build the **70:20:10** split used by the web app:
+Build the **80:10:10** split used by the web app:
 
 ```powershell
 python split_dataset.py
-# same as: python split_dataset.py --split 70_20_10
+# same as: python split_dataset.py --split 80_10_10
 ```
 
 Build all three presets for comparison:
@@ -171,10 +172,10 @@ Results are printed to the console.
 
 ### 3. Evaluate on test set
 
-Single model (app default — MobileNetV3 + 70:20:10):
+Single model (app default — MobileNetV3 + 80:10:10):
 
 ```powershell
-python evaluate.py --backbone mobilenet_v3 --split-preset 70_20_10
+python evaluate.py --backbone mobilenet_v3 --split-preset 80_10_10
 ```
 
 **All models on default split + MobileNetV3 on other splits** (saves reports under `outputs/reports/`):
@@ -224,7 +225,7 @@ python app.py
 
 Open **http://127.0.0.1:5000** — same React UI, API routes unchanged (`/predict`, `/generate-poster`, `/api/fruits`, `/fruit-sample/...`).
 
-The Flask app always uses **MobileNetV3** on the **70:20:10** split (`fruit_classifier_mobilenet_v3.h5`). Legacy Jinja templates under `templates/` are used only when `frontend/dist/` is not built.
+The Flask app always uses **MobileNetV3** on the **80:10:10** split (`fruit_classifier_mobilenet_v3.h5`). Legacy Jinja templates under `templates/` are used only when `frontend/dist/` is not built.
 
 **MagicPath:** Run `npx -y magicpath-ai login` to install designs from [MagicPath](https://www.magicpath.ai) into `frontend/src/components/magicpath/` via `magicpath-ai add`. Until logged in, the bundled SaaS components in that folder are used.
 

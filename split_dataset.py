@@ -1,7 +1,7 @@
 """
 Split dataset/raw into train/val/test per class for multiple ratio presets.
 
-Presets: 70:20:10 (app default), 60:20:20, 80:10:10.
+Presets: 80:10:10 (app default), 70:20:10, 60:20:20.
 Each preset is stored under dataset/splits/<preset>/.
 """
 

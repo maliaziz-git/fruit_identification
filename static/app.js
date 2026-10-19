@@ -29,15 +29,23 @@ const downloadPosterBtn = document.getElementById("download-poster-btn");
 const loadingMessage = document.getElementById("loading-message");
 
 const MAX_BYTES = 8 * 1024 * 1024;
+const EXPORT_SIZE = 512;
+const DEFAULT_CROP_FRACTION = 0.85;
 const ALLOWED_EXT = ["jpg", "jpeg", "png", "webp"];
 const ALLOWED_MIME = ["image/jpeg", "image/png", "image/webp"];
 
 let selectedFile = null;
+let originalFile = null;
+let cropFractions = null;
 let pendingFile = null;
 let lastPrediction = null;
 let cropper = null;
+let cropperReady = false;
 let previewObjectUrl = null;
 let cropImageUrl = null;
+
+const cropApplyBtn = document.getElementById("crop-apply-btn");
+const cropFullBtn = document.getElementById("crop-full-btn");
 
 function revokePreviewUrl() {
   if (previewObjectUrl) {
@@ -85,6 +93,82 @@ function hideUploadPreview() {
   if (dropZone) dropZone.classList.remove("has-file");
 }
 
+function defaultCropFractions(nw, nh) {
+  const side = Math.min(nw, nh) * DEFAULT_CROP_FRACTION;
+  return {
+    x: (nw - side) / 2 / nw,
+    y: (nh - side) / 2 / nh,
+    w: side / nw,
+    h: side / nh,
+  };
+}
+
+function loadImageSize(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      resolve({ nw: img.naturalWidth, nh: img.naturalHeight });
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Could not read image dimensions."));
+    };
+    img.src = url;
+  });
+}
+
+function setCropModalActionsEnabled(enabled) {
+  if (cropApplyBtn) cropApplyBtn.disabled = !enabled;
+  if (cropFullBtn) cropFullBtn.disabled = !enabled;
+}
+
+function applyDefaultCrop(cropper, imageEl) {
+  const nw = imageEl.naturalWidth;
+  const nh = imageEl.naturalHeight;
+  const side = Math.min(nw, nh) * DEFAULT_CROP_FRACTION;
+  cropper.setData({
+    x: (nw - side) / 2,
+    y: (nh - side) / 2,
+    width: side,
+    height: side,
+  });
+}
+
+function cropToFractions(cropper, imageEl) {
+  const nw = imageEl.naturalWidth;
+  const nh = imageEl.naturalHeight;
+  if (nw < 1 || nh < 1) return null;
+  const data = cropper.getData();
+  if (data.width < 1 || data.height < 1) return null;
+  return {
+    x: data.x / nw,
+    y: data.y / nh,
+    w: data.width / nw,
+    h: data.height / nh,
+  };
+}
+
+function normalizeCroppedCanvas(sourceCanvas) {
+  if (!sourceCanvas) return null;
+  const out = document.createElement("canvas");
+  out.width = EXPORT_SIZE;
+  out.height = EXPORT_SIZE;
+  const ctx = out.getContext("2d");
+  if (!ctx) return null;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, EXPORT_SIZE, EXPORT_SIZE);
+  const scale = Math.min(
+    EXPORT_SIZE / sourceCanvas.width,
+    EXPORT_SIZE / sourceCanvas.height
+  );
+  const w = sourceCanvas.width * scale;
+  const h = sourceCanvas.height * scale;
+  ctx.drawImage(sourceCanvas, (EXPORT_SIZE - w) / 2, (EXPORT_SIZE - h) / 2, w, h);
+  return out;
+}
+
 function destroyCropper() {
   if (cropper) {
     cropper.destroy();
@@ -94,6 +178,8 @@ function destroyCropper() {
 
 function closeCropModal() {
   destroyCropper();
+  cropperReady = false;
+  setCropModalActionsEnabled(false);
   cropModal.classList.add("hidden");
   cropImage.removeAttribute("src");
   if (cropImageUrl) {
@@ -108,6 +194,8 @@ function closeCropModal() {
 
 function openCropModal(file) {
   pendingFile = file;
+  cropperReady = false;
+  setCropModalActionsEnabled(false);
   cropHint.textContent = file.name;
   cropModal.classList.remove("hidden");
 
@@ -118,7 +206,9 @@ function openCropModal(file) {
       viewMode: 1,
       dragMode: "crop",
       aspectRatio: NaN,
+      initialAspectRatio: 1,
       autoCropArea: 0.85,
+      autoCrop: false,
       responsive: true,
       background: false,
       guides: true,
@@ -127,6 +217,11 @@ function openCropModal(file) {
       cropBoxMovable: true,
       cropBoxResizable: true,
       toggleDragModeOnDblclick: true,
+      ready() {
+        applyDefaultCrop(cropper, cropImage);
+        cropperReady = true;
+        setCropModalActionsEnabled(true);
+      },
     });
   };
 
@@ -135,23 +230,35 @@ function openCropModal(file) {
   cropImage.src = cropImageUrl;
 }
 
-function acceptFile(file) {
+function acceptFile(file, previewFile) {
   selectedFile = file;
-  setPreview(file);
+  setPreview(previewFile || file);
   identifyBtn.disabled = false;
   identifyBtn2.disabled = false;
 }
 
 function applyCrop() {
   if (!cropper || !pendingFile) return;
+  if (!cropperReady) {
+    alert("Image is still loading. Wait a moment, then try again.");
+    return;
+  }
 
-  const canvas = cropper.getCroppedCanvas({
+  originalFile = pendingFile;
+  cropFractions = cropToFractions(cropper, cropImage);
+  if (!cropFractions) {
+    alert("Invalid crop region. Adjust the crop box and try again.");
+    return;
+  }
+
+  const cropped = cropper.getCroppedCanvas({
     maxWidth: 1024,
     maxHeight: 1024,
     imageSmoothingEnabled: true,
     imageSmoothingQuality: "high",
     fillColor: "#ffffff",
   });
+  const canvas = normalizeCroppedCanvas(cropped);
 
   if (!canvas) {
     alert("Could not crop this image. Try a different area.");
@@ -169,10 +276,10 @@ function applyCrop() {
         return;
       }
       const base = pendingFile.name.replace(/\.[^.]+$/i, "") || "fruit";
-      const cropped = new File([blob], base + "_cropped.jpg", {
+      const croppedFile = new File([blob], base + "_cropped.jpg", {
         type: "image/jpeg",
       });
-      acceptFile(cropped);
+      acceptFile(originalFile, croppedFile);
       closeCropModal();
     },
     "image/jpeg",
@@ -180,10 +287,30 @@ function applyCrop() {
   );
 }
 
-function useFullImage() {
+async function useFullImage() {
   if (!pendingFile) return;
-  acceptFile(pendingFile);
-  closeCropModal();
+  try {
+    let nw;
+    let nh;
+    if (cropperReady && cropImage.naturalWidth >= 1) {
+      nw = cropImage.naturalWidth;
+      nh = cropImage.naturalHeight;
+    } else {
+      const size = await loadImageSize(pendingFile);
+      nw = size.nw;
+      nh = size.nh;
+    }
+    if (nw < 1 || nh < 1) {
+      alert("Could not read image dimensions. Try again.");
+      return;
+    }
+    originalFile = pendingFile;
+    cropFractions = defaultCropFractions(nw, nh);
+    acceptFile(originalFile);
+    closeCropModal();
+  } catch (err) {
+    alert(err.message || "Could not use default crop.");
+  }
 }
 
 function handleFile(file) {
@@ -227,6 +354,8 @@ function setLoadingMessage(text) {
 
 function resetUpload() {
   selectedFile = null;
+  originalFile = null;
+  cropFractions = null;
   pendingFile = null;
   lastPrediction = null;
   fileInput.value = "";
@@ -247,14 +376,20 @@ function resetUpload() {
 }
 
 async function runPredict() {
-  if (!selectedFile) {
+  const uploadFile = originalFile || selectedFile;
+  if (!uploadFile) {
     alert("Please choose and crop an image first.");
+    return;
+  }
+  if (!cropFractions) {
+    alert("Please apply or confirm a crop first.");
     return;
   }
   loading.classList.remove("hidden");
   setLoadingMessage("Identifying fruit...");
   const formData = new FormData();
-  formData.append("image", selectedFile, selectedFile.name);
+  formData.append("image", uploadFile, uploadFile.name);
+  formData.append("crop", JSON.stringify(cropFractions));
 
   try {
     const res = await fetch("/predict", { method: "POST", body: formData });
@@ -332,7 +467,11 @@ async function downloadPoster() {
   if (downloadPosterBtn) downloadPosterBtn.disabled = true;
 
   const formData = new FormData();
-  formData.append("image", selectedFile, selectedFile.name);
+  const uploadFile = originalFile || selectedFile;
+  formData.append("image", uploadFile, uploadFile.name);
+  if (cropFractions) {
+    formData.append("crop", JSON.stringify(cropFractions));
+  }
   formData.append(
     "metadata",
     JSON.stringify({
@@ -419,7 +558,7 @@ document
   .addEventListener("click", closeCropModal);
 
 function openCropForSelected() {
-  const file = selectedFile || pendingFile;
+  const file = originalFile || selectedFile || pendingFile;
   if (file) openCropModal(file);
 }
 

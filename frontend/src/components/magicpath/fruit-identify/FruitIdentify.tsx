@@ -1,14 +1,83 @@
 import { useCallback, useRef, useState } from 'react'
 import Cropper from 'react-cropper'
 import type { ReactCropperElement } from 'react-cropper'
+import type CropperJS from 'cropperjs'
 import {
   downloadPoster,
   predictFruit,
   validateFile,
+  type CropFractions,
+  type PredictOptions,
   type PredictResult,
 } from '../../../lib/api'
 
 const MAX_BYTES = 8 * 1024 * 1024
+const EXPORT_SIZE = 512
+const DEFAULT_CROP_FRACTION = 0.85
+
+function defaultCropFractions(nw: number, nh: number): CropFractions {
+  const side = Math.min(nw, nh) * DEFAULT_CROP_FRACTION
+  return {
+    x: (nw - side) / 2 / nw,
+    y: (nh - side) / 2 / nh,
+    w: side / nw,
+    h: side / nh,
+  }
+}
+
+function loadImageSize(file: File): Promise<{ nw: number; nh: number }> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      resolve({ nw: img.naturalWidth, nh: img.naturalHeight })
+      URL.revokeObjectURL(url)
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('Could not read image dimensions.'))
+    }
+    img.src = url
+  })
+}
+
+function applyDefaultCrop(cropper: CropperJS, nw: number, nh: number) {
+  const side = Math.min(nw, nh) * DEFAULT_CROP_FRACTION
+  cropper.setData({
+    x: (nw - side) / 2,
+    y: (nh - side) / 2,
+    width: side,
+    height: side,
+  })
+}
+
+function cropToFractions(cropper: CropperJS, nw: number, nh: number): CropFractions | null {
+  if (nw < 1 || nh < 1) return null
+  const data = cropper.getData()
+  if (data.width < 1 || data.height < 1) return null
+  return {
+    x: data.x / nw,
+    y: data.y / nh,
+    w: data.width / nw,
+    h: data.height / nh,
+  }
+}
+
+function normalizeCroppedCanvas(sourceCanvas: HTMLCanvasElement | null): HTMLCanvasElement | null {
+  if (!sourceCanvas) return null
+  const out = document.createElement('canvas')
+  out.width = EXPORT_SIZE
+  out.height = EXPORT_SIZE
+  const ctx = out.getContext('2d')
+  if (!ctx) return null
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, EXPORT_SIZE, EXPORT_SIZE)
+  const scale = Math.min(EXPORT_SIZE / sourceCanvas.width, EXPORT_SIZE / sourceCanvas.height)
+  const w = sourceCanvas.width * scale
+  const h = sourceCanvas.height * scale
+  ctx.drawImage(sourceCanvas, (EXPORT_SIZE - w) / 2, (EXPORT_SIZE - h) / 2, w, h)
+  return out
+}
 
 function confidenceClass(confidence: number): string {
   if (confidence >= 0.7) return 'bg-emerald-50 border-emerald-200 text-emerald-900'
@@ -24,6 +93,8 @@ export const FruitIdentify = () => {
   const cropperRef = useRef<ReactCropperElement>(null)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [originalFile, setOriginalFile] = useState<File | null>(null)
+  const [predictOptions, setPredictOptions] = useState<PredictOptions>({})
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [cropSrc, setCropSrc] = useState<string | null>(null)
@@ -34,6 +105,7 @@ export const FruitIdentify = () => {
   const [loadingMsg, setLoadingMsg] = useState('Identifying fruit…')
   const [error, setError] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
+  const [cropperReady, setCropperReady] = useState(false)
 
   const revokePreview = useCallback((url: string | null) => {
     if (url) URL.revokeObjectURL(url)
@@ -60,6 +132,7 @@ export const FruitIdentify = () => {
 
   const closeCrop = useCallback(() => {
     setShowCrop(false)
+    setCropperReady(false)
     setPendingFile(null)
     setCropSrc((prev) => {
       revokePreview(prev)
@@ -69,6 +142,7 @@ export const FruitIdentify = () => {
 
   const openCrop = useCallback(
     (file: File) => {
+      setCropperReady(false)
       setPendingFile(file)
       setCropSrc((prev) => {
         revokePreview(prev)
@@ -95,14 +169,32 @@ export const FruitIdentify = () => {
   const applyCrop = useCallback(() => {
     const cropper = cropperRef.current?.cropper
     if (!cropper || !pendingFile) return
+    if (!cropperReady) {
+      setError('Image is still loading. Wait a moment, then try again.')
+      return
+    }
 
-    const canvas = cropper.getCroppedCanvas({
+    const imageData = cropper.getImageData()
+    const fractions = cropToFractions(
+      cropper,
+      imageData.naturalWidth,
+      imageData.naturalHeight,
+    )
+    if (!fractions) {
+      setError('Invalid crop region. Adjust the crop box and try again.')
+      return
+    }
+    setOriginalFile(pendingFile)
+    setPredictOptions({ crop: fractions })
+
+    const cropped = cropper.getCroppedCanvas({
       maxWidth: 1024,
       maxHeight: 1024,
       imageSmoothingEnabled: true,
       imageSmoothingQuality: 'high',
       fillColor: '#ffffff',
     })
+    const canvas = normalizeCroppedCanvas(cropped)
     if (!canvas) {
       setError('Could not crop this image. Try a different area.')
       return
@@ -119,31 +211,61 @@ export const FruitIdentify = () => {
           return
         }
         const base = pendingFile.name.replace(/\.[^.]+$/i, '') || 'fruit'
-        const cropped = new File([blob], `${base}_cropped.jpg`, { type: 'image/jpeg' })
-        acceptFile(cropped)
+        const croppedFile = new File([blob], `${base}_cropped.jpg`, { type: 'image/jpeg' })
+        setSelectedFile(pendingFile)
+        setPreview(croppedFile)
+        setError(null)
         closeCrop()
       },
       'image/jpeg',
       0.92,
     )
-  }, [acceptFile, closeCrop, pendingFile])
+  }, [closeCrop, cropperReady, pendingFile, setPreview])
 
-  const useFullImage = useCallback(() => {
+  const useFullImage = useCallback(async () => {
     if (!pendingFile) return
-    acceptFile(pendingFile)
-    closeCrop()
-  }, [acceptFile, closeCrop, pendingFile])
+    try {
+      let nw: number
+      let nh: number
+      const cropper = cropperRef.current?.cropper
+      if (cropperReady && cropper) {
+        const imageData = cropper.getImageData()
+        nw = imageData.naturalWidth
+        nh = imageData.naturalHeight
+      } else {
+        const size = await loadImageSize(pendingFile)
+        nw = size.nw
+        nh = size.nh
+      }
+      if (nw < 1 || nh < 1) {
+        setError('Could not read image dimensions. Try again.')
+        return
+      }
+      const fractions = defaultCropFractions(nw, nh)
+      setOriginalFile(pendingFile)
+      setPredictOptions({ crop: fractions })
+      acceptFile(pendingFile)
+      closeCrop()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not use default crop.')
+    }
+  }, [acceptFile, closeCrop, cropperReady, pendingFile])
 
   const runPredict = async () => {
-    if (!selectedFile) {
+    const uploadFile = originalFile || selectedFile
+    if (!uploadFile) {
       setError('Please choose and crop an image first.')
+      return
+    }
+    if (!predictOptions.crop && !predictOptions.useFull) {
+      setError('Please apply or confirm a crop first.')
       return
     }
     setLoading(true)
     setLoadingMsg('Identifying fruit…')
     setError(null)
     try {
-      const data = await predictFruit(selectedFile)
+      const data = await predictFruit(uploadFile, predictOptions)
       setResult(data)
       setShowResults(true)
     } catch (e) {
@@ -154,12 +276,13 @@ export const FruitIdentify = () => {
   }
 
   const handlePoster = async () => {
-    if (!selectedFile || !result) return
+    const uploadFile = originalFile || selectedFile
+    if (!uploadFile || !result) return
     setLoading(true)
     setLoadingMsg('Creating poster…')
     setError(null)
     try {
-      await downloadPoster(selectedFile, result)
+      await downloadPoster(uploadFile, result, predictOptions)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Poster failed')
     } finally {
@@ -170,6 +293,8 @@ export const FruitIdentify = () => {
 
   const reset = () => {
     setSelectedFile(null)
+    setOriginalFile(null)
+    setPredictOptions({})
     setResult(null)
     setShowResults(false)
     setPreviewUrl((prev) => {
@@ -262,28 +387,30 @@ export const FruitIdentify = () => {
             }}
           />
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={() => cameraInputRef.current?.click()}
-              className="rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
-            >
-              Take photo
-            </button>
-            {selectedFile && (
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
               <button
                 type="button"
-                onClick={() => openCrop(selectedFile)}
-                className="rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+                onClick={() => cameraInputRef.current?.click()}
+                className="w-full rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium transition hover:bg-muted sm:w-auto"
               >
-                Adjust crop
+                Take photo
               </button>
-            )}
+              {selectedFile && (
+                <button
+                  type="button"
+                  onClick={() => openCrop(originalFile || selectedFile!)}
+                  className="w-full rounded-xl border border-border bg-background px-5 py-2.5 text-sm font-medium transition hover:bg-muted sm:w-auto"
+                >
+                  Adjust crop
+                </button>
+              )}
+            </div>
             <button
               type="button"
-              disabled={!selectedFile || loading}
+              disabled={!(originalFile || selectedFile) || loading}
               onClick={runPredict}
-              className="ml-auto rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
+              className="w-full rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50 sm:ml-auto sm:w-auto"
             >
               Identify fruit
             </button>
@@ -397,34 +524,47 @@ export const FruitIdentify = () => {
             <p className="mb-3 truncate text-sm text-muted-foreground">
               {pendingFile?.name}
             </p>
-            <Cropper
-              ref={cropperRef}
-              src={cropSrc}
-              style={{ height: 360, width: '100%' }}
-              viewMode={1}
-              dragMode="crop"
-              aspectRatio={NaN}
-              autoCropArea={0.85}
-              responsive
-              background={false}
-              guides
-              center
-              highlight
-              cropBoxMovable
-              cropBoxResizable
-            />
+            <div className="mx-auto mb-3 aspect-square w-full max-w-[520px] overflow-hidden rounded-xl bg-muted/30">
+              <Cropper
+                ref={cropperRef}
+                src={cropSrc}
+                style={{ height: '100%', width: '100%' }}
+                viewMode={1}
+                dragMode="crop"
+                aspectRatio={NaN}
+                initialAspectRatio={1}
+                autoCropArea={0.85}
+                autoCrop={false}
+                responsive
+                background={false}
+                guides
+                center
+                highlight
+                cropBoxMovable
+                cropBoxResizable
+                ready={() => {
+                  const cropper = cropperRef.current?.cropper
+                  if (!cropper) return
+                  const { naturalWidth, naturalHeight } = cropper.getImageData()
+                  applyDefaultCrop(cropper, naturalWidth, naturalHeight)
+                  setCropperReady(true)
+                }}
+              />
+            </div>
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 type="button"
+                disabled={!cropperReady}
                 onClick={applyCrop}
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
               >
                 Apply crop
               </button>
               <button
                 type="button"
+                disabled={!cropperReady}
                 onClick={useFullImage}
-                className="rounded-lg border border-border px-4 py-2 text-sm font-medium"
+                className="rounded-lg border border-border px-4 py-2 text-sm font-medium disabled:opacity-50"
               >
                 Use full image
               </button>

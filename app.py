@@ -3,7 +3,7 @@ Flask web application for the Local Fruit Identification System.
 Serves the upload GUI and /predict API endpoint.
 
 Inference always uses MobileNetV3 (train.APP_BACKBONE) trained on the
-70:20:10 split (train.APP_SPLIT). Compare backbones or split ratios with
+80:10:10 split (train.APP_SPLIT). Compare backbones or split ratios with
 evaluate.py --compare-models and evaluate.py --compare-splits.
 """
 
@@ -127,8 +127,18 @@ def predict_route():
         return err
 
     try:
-        result = predictor.predict(image_bytes)
+        crop = None
+        use_full = request.form.get("use_full") == "1"
+        crop_raw = request.form.get("crop")
+        if crop_raw:
+            crop = json.loads(crop_raw)
+            if not all(k in crop for k in ("x", "y", "w", "h")):
+                return jsonify({"error": "Invalid crop JSON."}), 400
+            predictor.validate_crop_fractions(crop)
+        result = predictor.predict(image_bytes, crop=crop, use_full=use_full)
         return jsonify(result)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
     except FileNotFoundError as e:
         return jsonify({"error": str(e)}), 503
     except Exception as e:

@@ -25,7 +25,7 @@ DATASET_DIR = os.path.join(BASE_DIR, "dataset")
 RAW_DIR = os.path.join(DATASET_DIR, "raw")
 SPLITS_DIR = os.path.join(DATASET_DIR, "splits")
 
-APP_SPLIT = "70_20_10"
+APP_SPLIT = "80_10_10"
 
 SPLIT_PRESETS = {
     "70_20_10": {"train": 0.70, "val": 0.20, "test": 0.10, "label": "70:20:10"},

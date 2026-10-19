@@ -27,6 +27,21 @@ export interface PredictResult {
   top3: TopPrediction[]
   message: string
   fruit_info?: FruitInfo
+  input_width?: number
+  input_height?: number
+  input_hash?: string
+}
+
+export interface CropFractions {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+export interface PredictOptions {
+  crop?: CropFractions
+  useFull?: boolean
 }
 
 const MAX_BYTES = 8 * 1024 * 1024
@@ -54,9 +69,17 @@ export function fruitSampleUrl(localName: string): string {
   return `/fruit-sample/${encodeURIComponent(localName)}`
 }
 
-export async function predictFruit(file: File): Promise<PredictResult> {
+export async function predictFruit(
+  file: File,
+  options?: PredictOptions,
+): Promise<PredictResult> {
   const formData = new FormData()
   formData.append('image', file, file.name)
+  if (options?.useFull) {
+    formData.append('use_full', '1')
+  } else if (options?.crop) {
+    formData.append('crop', JSON.stringify(options.crop))
+  }
   const res = await fetch('/predict', { method: 'POST', body: formData })
   const data = await res.json()
   if (!res.ok) throw new Error(data.error || 'Prediction failed')
@@ -66,9 +89,15 @@ export async function predictFruit(file: File): Promise<PredictResult> {
 export async function downloadPoster(
   file: File,
   prediction: PredictResult,
+  options?: PredictOptions,
 ): Promise<void> {
   const formData = new FormData()
   formData.append('image', file, file.name)
+  if (options?.useFull) {
+    formData.append('use_full', '1')
+  } else if (options?.crop) {
+    formData.append('crop', JSON.stringify(options.crop))
+  }
   formData.append(
     'metadata',
     JSON.stringify({

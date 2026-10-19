@@ -22,7 +22,18 @@ import poster as poster_gen
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = train.MAX_CONTENT_LENGTH
 
+try:
+    from flask_cors import CORS
+    CORS(app)
+except ImportError:
+    pass
+
 FRONTEND_DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "dist")
+
+
+@app.route("/health")
+def health_check():
+    return jsonify({"status": "healthy"}), 200
 
 
 def _react_build_ready():

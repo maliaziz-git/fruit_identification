@@ -48,6 +48,8 @@ const MAX_BYTES = 8 * 1024 * 1024
 const ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'webp']
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp']
 
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+
 export function validateFile(file: File): string | null {
   const ext = file.name.includes('.')
     ? file.name.split('.').pop()!.toLowerCase()
@@ -60,13 +62,13 @@ export function validateFile(file: File): string | null {
 }
 
 export async function fetchFruits(): Promise<Fruit[]> {
-  const res = await fetch('/api/fruits')
+  const res = await fetch(`${API_BASE}/api/fruits`)
   if (!res.ok) throw new Error('Failed to load fruit encyclopedia.')
   return res.json()
 }
 
 export function fruitSampleUrl(localName: string): string {
-  return `/fruit-sample/${encodeURIComponent(localName)}`
+  return `${API_BASE}/fruit-sample/${encodeURIComponent(localName)}`
 }
 
 export async function predictFruit(
@@ -80,7 +82,7 @@ export async function predictFruit(
   } else if (options?.crop) {
     formData.append('crop', JSON.stringify(options.crop))
   }
-  const res = await fetch('/predict', { method: 'POST', body: formData })
+  const res = await fetch(`${API_BASE}/predict`, { method: 'POST', body: formData })
   const data = await res.json()
   if (!res.ok) throw new Error(data.error || 'Prediction failed')
   return data
@@ -106,7 +108,7 @@ export async function downloadPoster(
       fruit_info: prediction.fruit_info || {},
     }),
   )
-  const res = await fetch('/generate-poster', { method: 'POST', body: formData })
+  const res = await fetch(`${API_BASE}/generate-poster`, { method: 'POST', body: formData })
   if (!res.ok) {
     let message = 'Poster generation failed.'
     try {
